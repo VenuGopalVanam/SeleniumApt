@@ -7,6 +7,7 @@ import java.util.Set;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,6 +18,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SeleniumLocators {
 	public static WebDriver driver;
+	public static Actions actions;
 	/* DROPDOWN HANDLING */
 	public static void dropDownHande(WebElement element, String value) {
 		Select s = new Select(element);
@@ -29,9 +31,11 @@ public class SeleniumLocators {
 		for (String window : allwindows) {
 			if (!window.equals(parent)) {
 				driver.switchTo().window(window);
-				break;
+				
 			}
+			
 		}
+		
 	}
 	/* FRAMES HANDLING*/
 	public static void switchTOFrame(WebDriver driver, WebElement frameelement) {
@@ -81,6 +85,7 @@ public class SeleniumLocators {
 		WebElement hover = driver.findElement(By.id("mousehover"));
 		Actions a1 = new Actions(driver);
 		a1.moveToElement(hover).build().perform();
+		a1.click(driver.findElement(By.cssSelector("a[href='#top']"))).build().perform();
 		
 			
 		//swithching frame
@@ -93,10 +98,15 @@ public class SeleniumLocators {
 		driver.findElement(By.cssSelector("#openwindow")).click();
 		switchToWindow(driver);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='button float-left']"))).click();
-		//driver.close();
+//		actions.sendKeys(Keys.ALT,Keys.F4).build().perform();
+		System.out.println(driver.getWindowHandles().size());
+		switchToWindow(driver);
+		
+		//String parent =switchToWindow(driver);
+		//driver.switchTo().window(parent);
 		
 		// Locator LINK TEXT
-				driver.findElement(By.linkText("Free Access to InterviewQues/ResumeAssistance/Material")).click();
+				driver.findElement(By.cssSelector("a[href='https://rahulshettyacademy.com/documents-request']")).click();
 				Thread.sleep(5000);
 				// selenium NAVIGATION keyword
 				driver.navigate().back();
