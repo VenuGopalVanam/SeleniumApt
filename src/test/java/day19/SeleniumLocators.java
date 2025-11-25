@@ -93,7 +93,7 @@ public class SeleniumLocators {
 		driver.findElement(By.cssSelector("#openwindow")).click();
 		switchToWindow(driver);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='button float-left']"))).click();
-		driver.close();
+		//driver.close();
 		
 		// Locator LINK TEXT
 				driver.findElement(By.linkText("Free Access to InterviewQues/ResumeAssistance/Material")).click();
