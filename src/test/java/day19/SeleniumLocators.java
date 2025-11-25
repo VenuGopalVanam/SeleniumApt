@@ -1,13 +1,10 @@
 package day19;
-
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
-
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -30,12 +27,9 @@ public class SeleniumLocators {
 		Set<String> allwindows = driver.getWindowHandles();
 		for (String window : allwindows) {
 			if (!window.equals(parent)) {
-				driver.switchTo().window(window);
-				
-			}
-			
-		}
-		
+				driver.switchTo().window(window);	
+			}	
+		}	
 	}
 	/* FRAMES HANDLING*/
 	public static void switchTOFrame(WebDriver driver, WebElement frameelement) {
@@ -100,7 +94,7 @@ public class SeleniumLocators {
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='button float-left']"))).click();
 //		actions.sendKeys(Keys.ALT,Keys.F4).build().perform();
 		System.out.println(driver.getWindowHandles().size());
-		switchToWindow(driver);
+		switchToWindow(driver); 
 		
 		//String parent =switchToWindow(driver);
 		//driver.switchTo().window(parent);
