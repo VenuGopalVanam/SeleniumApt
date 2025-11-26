@@ -2,6 +2,7 @@ package day19;
 import java.time.Duration;
 import java.util.List;
 import java.util.Set;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -13,27 +14,46 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-public class SeleniumLocators {
+public class SeleniumLocatorsAndKeywords {
 	public static WebDriver driver;
-	public static Actions actions;
+	
 	/* DROPDOWN HANDLING */
 	public static void dropDownHande(WebElement element, String value) {
 		Select s = new Select(element);
 		s.selectByVisibleText(value);
 	}
 	/* WINDOW HANDLING */
-	public static void switchToWindow(WebDriver driver) {
-		String parent = driver.getWindowHandle();
+	
+	public static String switchToWindow(WebDriver driver, String parent) {
+		
 		Set<String> allwindows = driver.getWindowHandles();
 		for (String window : allwindows) {
 			if (!window.equals(parent)) {
-				driver.switchTo().window(window);	
+				driver.switchTo().window(window);
+				return window;
 			}	
-		}	
+		}
+		return null;
 	}
 	/* FRAMES HANDLING*/
 	public static void switchTOFrame(WebDriver driver, WebElement frameelement) {
 		driver.switchTo().frame(frameelement);
+		
+	}
+	public static void alertHandling(String alertName) {
+		
+		List<WebElement>ls = driver.findElements(By.cssSelector("input.btn-style"));
+		ls.stream().forEach(p->System.out.println(p.getAttribute("id")));
+		ls.stream().forEach((p)->{
+			if (p.getAttribute("id").contains(alertName)) {
+				System.out.println();
+				p.click();
+				Alert alert = driver.switchTo().alert();
+				System.out.println(alert.getText());
+				alert.accept();
+			}
+		});
+		
 		
 	}
 	public static void main(String[] args) throws Exception {
@@ -41,7 +61,7 @@ public class SeleniumLocators {
 		driver.get("https://rahulshettyacademy.com/AutomationPractice/");
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 		System.out.println("Title is : "+driver.getTitle());
 		System.out.println("Current URL is : "+driver.getCurrentUrl());
 
@@ -66,10 +86,11 @@ public class SeleniumLocators {
 		dropDownHande(drop, "Option2");
 		
 		/*ALERT HANDLING*/
-		driver.findElement(By.xpath("//input[@value='Alert']")).click();
-		Alert a = driver.switchTo().alert();
-		System.out.println("ALERT: "+a.getText());
-		a.accept();
+//		driver.findElement(By.xpath("//input[@value='Alert']")).click();
+//		Alert a = driver.switchTo().alert();
+//		System.out.println("ALERT: "+a.getText());
+//		a.accept();
+		alertHandling("confirmbtn");
 		
 		/*JAVA SCRIPT EXECUTOR TO SCROLL*/
 		JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -89,15 +110,14 @@ public class SeleniumLocators {
 		driver.switchTo().defaultContent();
 		
 		// Locator CSS SELECTOR
+		String parent = driver.getWindowHandle();
 		driver.findElement(By.cssSelector("#openwindow")).click();
-		switchToWindow(driver);
+		switchToWindow(driver,parent);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='button float-left']"))).click();
-//		actions.sendKeys(Keys.ALT,Keys.F4).build().perform();
-		System.out.println(driver.getWindowHandles().size());
-		switchToWindow(driver); 
+		System.out.println("Size of windows : "+driver.getWindowHandles().size());
+		driver.switchTo().window(parent);
 		
-		//String parent =switchToWindow(driver);
-		//driver.switchTo().window(parent);
+		
 		
 		// Locator LINK TEXT
 				driver.findElement(By.cssSelector("a[href='https://rahulshettyacademy.com/documents-request']")).click();
